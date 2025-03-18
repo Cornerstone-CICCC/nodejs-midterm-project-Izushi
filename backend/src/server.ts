@@ -3,6 +3,7 @@ import express, { Request, Response } from 'express'
 import dotenv from 'dotenv'
 import cookieSession from 'cookie-session';
 import userRouter from './routes/user.routes';
+import postRouter from './routes/post.routers';
 dotenv.config()
 
 // Create express server
@@ -33,6 +34,7 @@ app.use(cookieSession({
 
 // Routes
 app.use('/users', userRouter)
+app.use('/posts', postRouter)
 
 // 404 fallback
 app.use((req: Request, res: Response) => {
