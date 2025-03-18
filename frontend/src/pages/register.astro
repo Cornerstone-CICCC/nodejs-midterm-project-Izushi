@@ -1,0 +1,56 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout>
+  <h1>Create User</h1>
+  <form id="signUpForm">
+    <label for="username">Username</label>
+    <input type="text" id="username" name="username" required />
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" required />
+    <label for="username">First Name</label>
+    <input type="text" id="firstname" name="firstname" required />
+    <label for="username">Last Name</label>
+    <input type="text" id="lastname" name="lastname" required />
+    <button type="submit">Sign Up</button>
+  </form>
+  <a href="/login">Login page</a>
+  <p class="error"></p>
+</Layout>
+
+<script>
+  const signUpForm = document.querySelector("#signUpForm") as HTMLFormElement;
+
+  signUpForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target as HTMLFormElement);
+    const formObj = Object.fromEntries(formData.entries()); // able to get all form data
+
+    const res = await fetch(`http://localhost:3900/users/signup`, {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formObj),
+    });
+    if (!res.ok) {
+      // show login error on frontend
+      console.log("error");
+      const error = await res.json();
+      const errorElement = document.querySelector(
+        ".error"
+      ) as HTMLParagraphElement;
+      errorElement.textContent = error.message;
+      return;
+    }
+    // redirect to profile
+    window.location.href = "/profile";
+  });
+</script>
+
+<style>
+  .error {
+    color: red;
+  }
+</style>
