@@ -7,8 +7,8 @@ export const postModel = {
     const newPost: Post = {
       ...post,
       id: (posts.length + 1).toString(),
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
     posts.push(newPost);
     return newPost;
@@ -17,7 +17,7 @@ export const postModel = {
   updatePost: (id: string, post: Partial<Omit<Post, 'id' | 'createdAt' | 'updatedAt'>>): Post | null => {
     const index = posts.findIndex(p => p.id === id);
     if (index === -1) return null;
-    posts[index] = { ...posts[index], ...post, updatedAt: new Date() };
+    posts[index] = { ...posts[index], ...post, updatedAt: new Date().toISOString() };
     return posts[index];
   },
 

@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import cookieSession from 'cookie-session';
 import userRouter from './routes/user.routes';
 import postRouter from './routes/post.routers';
+import commentRouter from './routes/comment.routers';
 dotenv.config()
 
 // Create express server
@@ -12,7 +13,7 @@ const app = express()
 // Middleware
 // To communicate with external frontend
 app.use(cors({
-  origin: 'http://localhost:4321', // Astro port (now only port 4321 can access to this server)
+  origin: 'http://localhost:3000', // Astro port (now only port 4321 can access to this server)
   credentials: true // allow cookies transfer between frontend and backend
 }))
 
@@ -35,6 +36,7 @@ app.use(cookieSession({
 // Routes
 app.use('/users', userRouter)
 app.use('/posts', postRouter)
+app.use('/comments', commentRouter)
 
 // 404 fallback
 app.use((req: Request, res: Response) => {
