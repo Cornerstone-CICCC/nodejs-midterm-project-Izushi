@@ -1,6 +1,6 @@
 'use client';
 
-import { LogIn } from "lucide-react";
+import { UserIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -48,7 +48,7 @@ export default function SignupPage() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
       <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8">
         <div className="flex justify-center mb-6">
-          <LogIn className="h-10 w-10 text-blue-600" />
+          <UserIcon className="h-10 w-10 text-gray-600" />
         </div>
         <h1 className="text-2xl font-bold text-center mb-6">Create an account</h1>
         {error && (
@@ -115,7 +115,7 @@ export default function SignupPage() {
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white rounded-md py-2 hover:bg-blue-700 disabled:opacity-50"
+            className="w-full bg-gray-600 text-white rounded-md py-2 hover:bg-gray-500 disabled:opacity-50"
             disabled={isLoading}
           >
             {isLoading ? "Creating account..." : "Sign up"}

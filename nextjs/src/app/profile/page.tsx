@@ -63,7 +63,7 @@ export default function ProfilePage() {
   return (
     <>
       <Header user={user} onLogout={handleLogout} />
-      <div className="min-h-screen bg-gray-50 p-4">
+      <div className="min-h-screen p-4 mt-16">
         <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-8">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center space-x-4">

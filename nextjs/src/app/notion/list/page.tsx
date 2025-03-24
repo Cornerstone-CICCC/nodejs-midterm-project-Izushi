@@ -16,14 +16,14 @@ interface Article {
 }
 
 const tagColors: { [key: string]: string } = {
-  React: 'bg-blue-500 text-white',
-  'Node.js': 'bg-green-500 text-white',
-  Express: 'bg-gray-500 text-white',
-  Database: 'bg-red-500 text-white',
-  JavaScript: 'bg-yellow-500 text-black',
-  Frontend: 'bg-pink-500 text-white',
-  Backend: 'bg-purple-500 text-white',
-  API: 'bg-teal-500 text-white',
+  React: 'bg-blue-400 text-white',
+  'Node.js': 'bg-green-400 text-white',
+  Express: 'bg-gray-400 text-white',
+  Database: 'bg-red-400 text-white',
+  JavaScript: 'bg-yellow-400 text-black',
+  Frontend: 'bg-pink-400 text-white',
+  Backend: 'bg-purple-400 text-white',
+  API: 'bg-teal-400 text-white',
 };
 
 export default function DiaryPage() {
@@ -122,51 +122,41 @@ export default function DiaryPage() {
   return (
     <>
       <Header user={user} onLogout={handleLogout} />
-      <div className="min-h-screen py-8 px-4">
+      <div className="min-h-screen py-6 px-4">
         <div className="max-w-4xl mx-auto">
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="text-3xl font-bold text-gray-700 mb-8">Article List</h1>
-            <div className="flex items-center">
-              <SearchIcon className='mr-2 mb-8 text-gray-400' />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="px-4 py-1 border border-gray-300 rounded-md mb-8"
-              />
-            </div>
+          <div className="flex sm:justify-end items-center gap-2 mb-6">
+            <SearchIcon className="text-gray-400 sm:mr-2" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="px-4 py-2 border border-gray-300 rounded-md focus:border-gray-700 focus:outline-none w-full sm:w-auto"
+            />
           </div>
-          {error && (
-            <p className="text-red-500 text-sm mb-4">{error}</p>
-          )}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+          <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-4">
             {filteredEntries.map((entry) => (
               <Link href={`/notion/${entry.id}`} key={entry.id}>
-                <div
-                  className="bg-white rounded-lg shadow-xl overflow-hidden hover:shadow-lg transition-shadow duration-300"
-                >
-                  <div className="p-6">
-                    <h2 className="text-xl font-semibold text-gray-900 mb-2 line-clamp-2">
+                <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                  <div className="p-4 sm:p-6">
+                    <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2 line-clamp-2">
                       {entry.title}
                     </h2>
-                    <p className="text-gray-600 mb-4 line-clamp-3">
+                    <p className="text-gray-600 mb-3 sm:mb-4 line-clamp-3">
                       {entry.description}
                     </p>
-                    <div className="flex flex-wrap gap-2 mb-4">
+                    <div className="flex flex-wrap gap-1 sm:gap-2 mb-3 sm:mb-4">
                       {entry.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className={`px-2 py-1 rounded-full text-sm ${tagColors[tag]}`}
-                        >
+                        <span key={tag} className={`px-2 py-1 rounded-full text-xs sm:text-sm ${tagColors[tag]}`}>
                           {tag}
                         </span>
                       ))}
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-500 text-sm mb-2">
+                      <span className="text-gray-500 text-xs sm:text-sm">
                         {entry.author}
                       </span>
-                      <span className="text-sm text-gray-500">
+                      <span className="text-xs sm:text-sm text-gray-500">
                         {entry.date}
                       </span>
                     </div>

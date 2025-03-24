@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
@@ -120,16 +119,11 @@ export default function Page() {
   return (
     <>
       <Header user={user} onLogout={handleLogout} />
-      <div className="container mx-auto p-20">
-        <div className="flex items-center justify-between mb-6">
-          <div className="ml-5 lg:ml-20 flex items-center px-4 py-2 text-sm hover:bg-gray-50">
-            <Link href="/notion/list" className="text-blue-500">← Back</Link>
-          </div>
-        </div>
+      <div className="container mx-auto p-6 sm:p-10 lg:p-20">
         <div className="text-center px-5 lg:px-20 font-bold text-3xl">
           <p>{pageInfo.title}</p>
         </div>
-        <div className="mt-2 text-right px-5 lg:px-20 text-gray-500">
+        <div className="mt-2 text-right px-4 sm:px-8 lg:px-20 text-gray-500">
           <p>{pageInfo.date}</p>
         </div>
         <div className="text-right px-5 lg:px-20 text-gray-500">
@@ -180,34 +174,43 @@ export default function Page() {
           })}
         </div>
         <div className="py-10 px-5 lg:p-10 lg:px-20">
-          <h2 className="text-2xl font-bold mb-4">Comments</h2>
-          {comments.map(comment => (
-            <div key={comment.id} className="mb-4 p-4 border border-gray-300 rounded-lg">
-              <div className="flex justify-between items-center mb-2">
-                <p className="text-lg font-bold">{comment.username}</p>
+          <h2 className="text-2xl font-bold mb-4">Comments<span>{`(${comments.length})`}</span></h2>
+          <div className="my-6">
+            <div className="flex items-start mb-2">
+              <div className="w-9 h-9 rounded-full bg-gray-300 flex items-center justify-center mr-3 flex-shrink-0 self-start">
+                <span className="text-white font-bold">{user?.username.charAt(0)}</span>
               </div>
-              {editCommentId === comment.id ? (
-                <div>
-                  <textarea
-                    value={editCommentContent}
-                    onChange={(e) => setEditCommentContent(e.target.value)}
-                    className="w-full p-2 border border-gray-300 rounded"
-                    rows="4"
-                  />
-                  <div className="flex justify-end">
-                    <button
-                      onClick={() => handleCommentEdit(comment.id)}
-                      className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
-                    >
-                      Save Comment
-                    </button>
+              <textarea
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                className="w-full ml-2 p-2 border border-gray-300 rounded"
+                rows="4"
+                placeholder="Input your comment..."
+              />
+            </div>
+            <div className="flex justify-end">
+              <button
+                onClick={handleCommentSubmit}
+                className="mt-2 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-700"
+              >
+                Submit Comment
+              </button>
+            </div>
+          </div>
+          {comments.map(comment => (
+            <div key={comment.id} className="mb-4 py-4">
+              <div className="flex justify-between items-center mb-2">
+                <div className="flex items-center">
+                  <div className="w-9 h-9 rounded-full bg-gray-300 flex items-center justify-center mr-3">
+                    <span className="text-white font-bold">{comment.username.charAt(0)}</span>
+                  </div>
+                  <div>
+                    <p className="text-lg font-normal">{comment.username}</p>
+                    <p className="text-xs text-gray-500">{new Date(comment.createdAt).toLocaleDateString()}</p>
                   </div>
                 </div>
-              ) : (
-                <p className="text-gray-700">{comment.content}</p>
-              )}
-              {user.username === comment.username ? (
-                  <div className="flex justify-end">
+                {user.username === comment.username ? (
+                  <div className="flex items-center">
                     <button
                       onClick={() => {
                         setEditCommentId(comment.id);
@@ -225,25 +228,29 @@ export default function Page() {
                     </button>
                   </div>
                 ) : null}
+              </div>
+              {editCommentId === comment.id ? (
+                <div>
+                  <textarea
+                    value={editCommentContent}
+                    onChange={(e) => setEditCommentContent(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded"
+                    rows="4"
+                  />
+                  <div className="flex justify-end">
+                    <button
+                      onClick={() => handleCommentEdit(comment.id)}
+                      className="mt-2 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-700"
+                    >
+                      Save Comment
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <p className="text-gray-700 mr-7">{comment.content}</p>
+              )}
             </div>
           ))}
-          <div className="mt-6">
-            <textarea
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded"
-              rows="4"
-              placeholder="Input your comment..."
-            />
-            <div className="flex justify-end">
-              <button
-                onClick={handleCommentSubmit}
-                className="mt-2 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-700"
-              >
-                Submit Comment
-              </button>
-            </div>
-          </div>
         </div>
       </div>
     </>
