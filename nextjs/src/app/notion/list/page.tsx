@@ -3,9 +3,8 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from "next/navigation";
-// import { User } from '@/types/user';
-import { LogOut } from 'lucide-react';
 import Header from '@/app/components/header';
+import { SearchCheckIcon, SearchCodeIcon, SearchIcon } from 'lucide-react';
 
 interface Article {
   id: string;
@@ -29,6 +28,8 @@ const tagColors: { [key: string]: string } = {
 
 export default function DiaryPage() {
   const [entries, setEntries] = useState<Article[]>([]);
+  const [filteredEntries, setFilteredEntries] = useState<Article[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const [error, setError] = useState('');
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -38,6 +39,20 @@ export default function DiaryPage() {
     checkAuth();
     fetchEntries();
   }, []);
+
+  useEffect(() => {
+    if (searchQuery === '') {
+      setFilteredEntries(entries);
+    } else {
+      setFilteredEntries(
+        entries.filter(entry =>
+          entry.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          entry.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          entry.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+        )
+      );
+    }
+  }, [searchQuery, entries]);
 
   const checkAuth = async () => {
     try {
@@ -110,13 +125,22 @@ export default function DiaryPage() {
       <div className="min-h-screen py-8 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center justify-between mb-6">
-            <h1 className="text-3xl font-bold text-gray-900 mb-8">Article List</h1>
+            <h1 className="text-3xl font-bold text-gray-700 mb-8">Article List</h1>
+            <div className="flex items-center">
+              <SearchIcon className='mr-2 mb-8 text-gray-400' />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="px-4 py-1 border border-gray-300 rounded-md mb-8"
+              />
+            </div>
           </div>
           {error && (
             <p className="text-red-500 text-sm mb-4">{error}</p>
           )}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {entries.map((entry) => (
+            {filteredEntries.map((entry) => (
               <Link href={`/notion/${entry.id}`} key={entry.id}>
                 <div
                   className="bg-white rounded-lg shadow-xl overflow-hidden hover:shadow-lg transition-shadow duration-300"
